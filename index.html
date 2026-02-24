@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaloedDude | Project Cipher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --card-bg: #0d0d0d;
+            --accent: #007AFF; 
+            --text: #ffffff;
+            --text-dim: #666666;
+            --border: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container für alle Inhalte */
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 60px auto;
+        }
+
+        /* Gemeinsame Karten-Stile */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* Seitentrennung - WICHTIG */
+        .page { display: none; width: 100%; animation: fadeIn 0.4s ease-out; }
+        .active-page { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Gateway Styles */
+        h1 { font-size: 3rem; letter-spacing: -2px; margin-bottom: 5px; text-align: center; }
+        .subtitle { color: var(--text-dim); text-align: center; margin-bottom: 40px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .menu-button {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px 20px;
+            border-radius: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .menu-button:hover {
+            border-color: var(--accent);
+            background: #111;
+        }
+
+        /* Formular Styles */
+        input, textarea {
+            width: 100%; background: #000; border: 1px solid var(--border);
+            padding: 15px; border-radius: 10px; color: white; margin-bottom: 15px;
+            font-family: inherit; box-sizing: border-box;
+        }
+
+        .submit-btn {
+            width: 100%; background: var(--accent); color: white; border: none;
+            padding: 15px; border-radius: 10px; font-weight: 700; cursor: pointer;
+        }
+
+        /* Gaming Page Stats */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: #000;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .counter { color: var(--accent); font-size: 1.5rem; font-weight: 700; font-family: 'JetBrains Mono'; }
+        .stat-label { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; margin-top: 5px; }
+
+        /* Navigation */
+        .back-link { color: var(--accent); cursor: pointer; margin-bottom: 20px; display: inline-block; font-size: 0.9rem; }
+
+        /* Lock Screen */
+        #lock-screen {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
+            display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="home-page" class="page active-page">
+            <h1>HaloedDude</h1>
+            <p class="subtitle">[ ACCESS_POINT: PROJECT_CIPHER ]</p>
+            
+            <div class="menu-grid">
+                <div class="menu-button" onclick="goTo('gaming-page')">
+                    <h3 style="margin:0">Gaming</h3>
+                    <p style="margin:5px 0 0; font-size:0.8rem; color:var(--text-dim)">Steam Analytics</p>
+                </div>
+                <div class="menu-button" onclick="openLock()">
+                    <h3 style="margin:0">Private</h3>
+                    <p style="margin:5px 0 0; font-size:0.8rem; color:var(--text-dim)">Encrypted Content</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-top:0; font-size:1.2rem">Direct Contact</h2>
+                <form action="https://formspree.io/f/xvzbdgqr" method="POST">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <textarea name="message" rows="4" placeholder="Your transmission..."></textarea>
+                    <button type="submit" class="submit-btn">Send Signal</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="gaming-page" class="page">
+            <span class="back-link" onclick="goTo('home-page')">← Return to Home</span>
+            <div class="card">
+                <h2 style="margin-top:0">Gaming Portfolio</h2>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <a href="https://steamcommunity.com/profiles/76561199232070032" target="_blank">
+                        <img src="https://steamprofile.com/signature/76561199232070032.png" alt="Steam Signature" style="max-width:100%; border-radius:8px;">
+                    </a>
+                </div>
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <div class="counter" data-target="254">0</div>
+                        <div class="stat-label">Games</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="counter" data-target="1280">0</div>
+                        <div class="stat-label">Awards</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="counter" data-target="8">0</div>
+                        <div class="stat-label">Years</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="private-page" class="page">
+            <span class="back-link" onclick="goTo('home-page')">← Return to Home</span>
+
+<div class="card">
+    <h2 style="margin-top:0; color:var(--accent)">Private Archive</h2>
+    <p style="color:var(--text-dim); margin-bottom:30px;">Wählen Sie ein Projekt um sich Details anzusehen.</p>
+
+    <details class="project-dropdown">
+        <summary class="menu-button" style="text-align: left; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h3 style="margin:0">Project Cipher</h3>
+                <p style="margin:5px 0 0; font-size:0.8rem; color:var(--text-dim)">Website Development</p>
+            </div>
+            <span class="dropdown-arrow">▼</span>
+        </summary>
+
+        <div class="dropdown-content" style="padding: 20px; border: 1px solid var(--border); border-top: none; border-radius: 0 0 16px 16px; background: #080808;">
+            <h4>Projekt Hintergrund</h4>
+            <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6;">
+                Project Cipher, wie HaloedDude es nannte, ist ein Projekt in dem er versuchte seine Leidenschaft für Gaming zusammen mit einer privaten Cloud zu verbinden. Die private Cloud kann von jedem betreten werden, der einen Code für die Seite erhält. In der privaten Cloud findet man Projekte, Dateien, Fotos und Videos aus HaloedDudes Privatleben, auch die wahre Identität wird hier preisgegeben für Bewerbunsprozesse. Mit diesen Worten begrüßt Sie HaloedDude in seinem Project Cipher.
+            </p>
+
+            <h4 style="margin-top:20px;">Dateien</h4>
+
+            <div style="margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 20px;">
+        <a href="file:///C:/Users/brusi/Desktop/Project%20Cipher/entwurf-code.pdf" target="_blank" class="back-link" style="margin:0; text-decoration: none; font-weight: bold;">
+            📄 Erster Code der Website (PDF)
+        </a>
+        <div style="margin-top: 10px;">
+            <embed src="file:///C:/Users/brusi/Desktop/Project%20Cipher/entwurf-code.pdf" type="application/pdf" width="100%" height="250px" style="border-radius: 8px; border: 1px solid var(--border);">
+        </div>
+    </div>
+
+	<div style="margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 20px;">
+	<a href="file:///C:/Users/brusi/Desktop/Project%20Cipher/entwurf.pdf" target="_blank" class="back-link" style="margin:0; text-decoration: none; font-weight: bold;">
+	   📄 Erster Entwurf der Website (PDF)
+	</a>
+        <div style="margin-top: 10px;">
+            <embed src="file:///C:/Users/brusi/Desktop/Project%20Cipher/entwurf.pdf" type="application/pdf" width="100%" height="250px" style="border-radius: 8px; border: 1px solid var(--border);">
+        </div>
+    </div>
+
+        </div>
+    </details>
+
+<details class="project-dropdown">
+        <summary class="menu-button" style="text-align: left; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h3 style="margin:0">Project Source Code</h3>
+                <p style="margin:5px 0 0; font-size:0.8rem; color:var(--text-dim)">Lebenslauf</p>
+            </div>
+            <span class="dropdown-arrow">▼</span>
+        </summary>
+
+        <div class="dropdown-content" style="padding: 20px; border: 1px solid var(--border); border-top: none; border-radius: 0 0 16px 16px; background: #080808;">
+            <h4>Projekt Hintergrund</h4>
+            <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6;">
+                Project Source Code ist nichts anderes als der simple Lebenslauf von HaleodDude, der Name HaloedDude wird in diesem Projekt nicht genannt, stattdessen wird sein bürgerlicher Name Jan-Hendrik Brusius verwendet. In den folgenden Dateien befinden sich persönliche Dateien wie der Lebenslauf und Bilder von Jan-Hendrik.
+            </p>
+
+            <h4 style="margin-top:20px;">Dateien</h4>
+
+            <div style="margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 20px;">
+        <a href="PLATZHALTER" target="_blank" class="back-link" style="margin:0; text-decoration: none; font-weight: bold;">
+            📄 PLATZHALTER (PDF)
+        </a>
+        <div style="margin-top: 10px;">
+            <embed src="PLATZHALTER" type="application/pdf" width="100%" height="250px" style="border-radius: 8px; border: 1px solid var(--border);">
+        </div>
+    </div>
+
+	<div style="margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 20px;">
+	<a href="PLATZHALTER_2" target="_blank" class="back-link" style="margin:0; text-decoration: none; font-weight: bold;">
+	   📄 PLATZHALTER_2 (PDF)
+	</a>
+        <div style="margin-top: 10px;">
+            <embed src="PLATZHALTER_2" type="application/pdf" width="100%" height="250px" style="border-radius: 8px; border: 1px solid var(--border);">
+        </div>
+    </div>
+
+        </div>
+    </details>
+    </div>
+
+<style>
+    .project-dropdown { margin-bottom: 15px; }
+    .project-dropdown[open] .menu-button { 
+        border-color: var(--accent); 
+        border-radius: 16px 16px 0 0; 
+        background: #111;
+    }
+    .project-dropdown[open] .dropdown-arrow { transform: rotate(180deg); color: var(--accent); }
+    .dropdown-arrow { transition: 0.3s; color: var(--text-dim); }
+    
+    /* Versteckt den Standard-Pfeil vom Browser */
+    summary::-webkit-details-marker { display: none; }
+    summary { list-style: none; }
+</style>
+        </div>
+
+    </div>
+
+    <div id="lock-screen">
+        <h3 style="letter-spacing: 2px;">ENTER CODE</h3>
+        <input type="password" id="pass-input" style="width: 200px; text-align: center; font-size: 1.5rem; letter-spacing: 5px; margin: 20px 0;">
+        <div style="display: flex; gap: 10px;">
+            <button onclick="checkPass()" style="padding: 10px 20px; background: var(--accent); color: white; border: none; border-radius: 5px; cursor: pointer;">Verify</button>
+            <button onclick="closeLock()" style="padding: 10px 20px; background: #222; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const MY_CODE = "2007"; // Ändere deinen Code hier!
+
+        function goTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            window.scrollTo(0,0);
+            if(pageId === 'gaming-page') startCounters();
+        }
+
+        function openLock() { document.getElementById('lock-screen').style.display = 'flex'; document.getElementById('pass-input').focus(); }
+        function closeLock() { document.getElementById('lock-screen').style.display = 'none'; }
+
+        function checkPass() {
+            if(document.getElementById('pass-input').value === MY_CODE) {
+                closeLock();
+                goTo('private-page');
+            } else {
+                alert("ACCESS DENIED");
+                document.getElementById('pass-input').value = "";
+            }
+        }
+
+        function startCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(c => {
+                c.innerText = '0';
+                const target = +c.getAttribute('data-target');
+                const update = () => {
+                    const current = +c.innerText;
+                    const inc = target / 100;
+                    if(current < target) {
+                        c.innerText = Math.ceil(current + inc);
+                        setTimeout(update, 20);
+                    } else { c.innerText = target; }
+                };
+                update();
+            });
+        }
+    </script>
+</body>
+</html>
