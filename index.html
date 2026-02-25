@@ -116,6 +116,61 @@
             position: fixed; inset: 0; background: rgba(0,0,0,0.98);
             display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
         }
+
+	/* Terminal Styles */
+        .terminal-container {
+            margin-top: 30px;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            text-align: left;
+            box-shadow: 0 0 15px rgba(0, 122, 255, 0.1);
+        }
+
+        .terminal-header {
+            font-size: 0.7rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .terminal-output {
+            height: 120px;
+            overflow-y: auto;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            scrollbar-width: thin;
+        }
+
+        .terminal-line { margin-bottom: 4px; }
+        .terminal-line.user { color: var(--accent); }
+        .terminal-line.system { color: var(--text); }
+
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .terminal-prompt { color: var(--accent); font-weight: bold; }
+
+        #terminal-input {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.8rem;
+            width: 100%;
+            outline: none;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -146,6 +201,20 @@
                     <button type="submit" class="submit-btn">Send Signal</button>
                 </form>
             </div>
+
+	    <div class="terminal-container">
+            	<div class="terminal-header">
+                	<span>SYSTEM_TERMINAL_V1.0</span>
+                	<span>STATUS: ACTIVE</span>
+            </div>
+            <div id="terminal-output" class="terminal-output">
+                <div class="terminal-line system">Welcome to Cipher_OS. Type /help for commands.</div>
+            </div>
+            <div class="terminal-input-row">
+                <span class="terminal-prompt">></span>
+                <input type="text" id="terminal-input" placeholder="Enter command..." autocomplete="off">
+            </div>
+        </div>
         </div>
 
         <div id="gaming-page" class="page">
@@ -324,6 +393,76 @@
                 update();
             });
         }
+
+	// --- START TERMINAL MIT ASCII LOGO ---
+const terminalInput = document.getElementById('terminal-input');
+const terminalOutput = document.getElementById('terminal-output');
+
+// Das ASCII Logo als Variable
+const asciiLogo = `
+<span style="color: var(--google-yellow)">      .::::::::.      </span>
+<span style="color: var(--google-yellow)">    .::'      '::.    </span>
+<span style="color: var(--accent)">   .::  ██  ██  ::.   </span>
+<span style="color: var(--accent)">   ::   ██  ██   ::   </span>
+<span style="color: var(--accent)">   ::   ██████   ::   </span>
+<span style="color: var(--accent)">   ::   ██  ██   ::   </span>
+<span style="color: var(--accent)">   '::  ██  ██  ::'   </span>
+<span style="color: var(--google-yellow)">    '::.      .::'    </span>
+<span style="color: var(--google-yellow)">      '::::::::'      </span>
+<span style="color: var(--accent)">     HALOED_DUDE</span>
+`;
+
+// Diese Funktion sorgt dafür, dass das Logo erscheint, sobald die Seite geladen ist
+window.addEventListener('load', () => {
+    printToTerminal(asciiLogo, "system");
+    printToTerminal("System initialized. Type /help for commands.", "system");
+});
+
+terminalInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        const command = this.value.trim().toLowerCase();
+        handleCommand(command);
+        this.value = '';
+    }
+});
+
+function printToTerminal(text, type) {
+    const line = document.createElement('div');
+    line.className = `terminal-line ${type}`;
+    line.innerHTML = text.replace(/\n/g, '<br>'); // Erlaubt Zeilenumbrüche im Terminal
+    terminalOutput.appendChild(line);
+    terminalOutput.scrollTop = terminalOutput.scrollHeight; // Automatisches Scrollen
+}
+
+function handleCommand(cmd) {
+    printToTerminal(`> ${cmd}`, "user");
+
+    let response = "";
+
+    if (cmd === '/help') {
+        printToTerminal(asciiLogo, "system");
+        response = "Available commands: /about, /status, /clear, /secret, /gaming";
+    } else if (cmd === '/about') {
+        response = "User: HaloedDude | Core: Project Cipher | Status: Admin";
+    } else if (cmd === '/status') {
+        response = "Neural Link: Stable | Database: Encrypted | Steam_Auth: Verified";
+    } else if (cmd === '/clear') {
+        terminalOutput.innerHTML = '';
+        return;
+    } else if (cmd === '/gaming') {
+        response = "Bypassing firewalls... Redirecting to Gaming Sector.";
+        setTimeout(() => goTo('gaming-page'), 1000);
+    } else if (cmd === '/secret') {
+        response = "SYSTEM OVERRIDE: 🚀 Mode engaged.";
+        document.body.style.boxShadow = "inset 0 0 100px rgba(0, 122, 255, 0.5)";
+        setTimeout(() => document.body.style.boxShadow = "none", 2000);
+    } else {
+        response = `Err: Command '${cmd}' not found. Type /help.`;
+    }
+
+    printToTerminal(response, "system");
+}
+// --- ENDE TERMINAL MIT ASCII LOGO ---
     </script>
 </body>
 </html>
