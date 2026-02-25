@@ -310,6 +310,46 @@
                     <a href="https://steamcommunity.com/profiles/76561199232070032" target="_blank">
                         <img src="https://steamprofile.com/signature/76561199232070032.png" alt="Steam Signature" style="max-width:100%; border-radius:8px;">
                     </a>
+
+		<div style="margin-top: 25px; display: flex; flex-direction: column; gap: 15px;">
+
+    <div style="border: 1px solid var(--border); border-left: 5px solid #5865F2; background: #000; padding: 15px; display: flex; align-items: center; border-radius: 8px;">
+        <div style="font-family: 'JetBrains Mono'; font-weight: bold; min-width: 90px; color: var(--text-dim); font-size: 0.8rem;">DISCORD</div>
+        <div style="border-left: 1px solid var(--border); padding-left: 15px; width: 100%;">
+            <div style="font-family: 'JetBrains Mono'; font-size: 0.8rem;"><span style="color: var(--accent);">USER:</span> HaloedDude</div>
+        </div>
+    </div>
+
+    <div style="border: 1px solid var(--border); border-left: 5px solid #FFFFFF; background: #000; padding: 15px; display: flex; align-items: center; border-radius: 8px;">
+        <div style="font-family: 'JetBrains Mono'; font-weight: bold; min-width: 90px; color: var(--text-dim); font-size: 0.8rem;">ROBLOX</div>
+        <div style="border-left: 1px solid var(--border); padding-left: 15px; width: 100%;">
+            <div style="font-family: 'JetBrains Mono'; font-size: 0.8rem;"><span style="color: var(--accent);">USER:</span> HaloedDude</div>
+            <div style="font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--text-dim);">ID: 1552639725</div>
+        </div>
+    </div>
+
+    <div style="border: 1px solid var(--border); border-left: 5px solid #0037AE; background: #000; padding: 15px; display: flex; align-items: center; border-radius: 8px;">
+        <div style="font-family: 'JetBrains Mono'; font-weight: bold; min-width: 90px; color: var(--text-dim); font-size: 0.8rem;">PS5 / PSN</div>
+        <div style="border-left: 1px solid var(--border); padding-left: 15px; width: 100%;">
+            <div style="font-family: 'JetBrains Mono'; font-size: 0.8rem;"><span style="color: var(--accent);">PSN:</span> HaloedDude</div>
+        </div>
+    </div>
+
+    <div style="border: 1px solid var(--border); border-left: 5px solid #E1306C; background: #000; padding: 15px; display: flex; align-items: center; border-radius: 8px;">
+        <div style="font-family: 'JetBrains Mono'; font-weight: bold; min-width: 90px; color: var(--text-dim); font-size: 0.8rem;">INSTAGRAM</div>
+        <div style="border-left: 1px solid var(--border); padding-left: 15px; width: 100%;">
+            <div style="font-family: 'JetBrains Mono'; font-size: 0.8rem;"><span style="color: var(--accent);">LINK:</span> @haloedude</div>
+        </div>
+    </div>
+
+    <div style="border: 1px solid var(--border); border-left: 5px solid #3b3b3b; background: #000; padding: 15px; display: flex; align-items: center; border-radius: 8px;">
+        <div style="font-family: 'JetBrains Mono'; font-weight: bold; min-width: 90px; color: var(--text-dim); font-size: 0.8rem;">EPIC</div>
+        <div style="border-left: 1px solid var(--border); padding-left: 15px; width: 100%;">
+            <div style="font-family: 'JetBrains Mono'; font-size: 0.8rem;"><span style="color: var(--accent);">USER:</span> HaloedDude</div>
+        </div>
+    </div>
+
+</div>
                 </div>
                 <div class="stat-grid">
                     <div class="stat-box">
@@ -440,7 +480,18 @@
     </div>
 
     <script>
-        const MY_CODE = "2007"; // Ändere deinen Code hier!
+
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+const authorizedHashes = [
+    "c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f",
+    "f1cfa5ebb149e8099d561aae57beed6c68f990f45a910ea9d7b460dbcc5350be"
+];
 
         function goTo(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
@@ -452,15 +503,23 @@
         function openLock() { document.getElementById('lock-screen').style.display = 'flex'; document.getElementById('pass-input').focus(); }
         function closeLock() { document.getElementById('lock-screen').style.display = 'none'; }
 
-        function checkPass() {
-            if(document.getElementById('pass-input').value === MY_CODE) {
-                closeLock();
-                goTo('private-page');
-            } else {
-                alert("ACCESS DENIED");
-                document.getElementById('pass-input').value = "";
-            }
+       async function checkPass() {
+    const passwordInput = document.getElementById('pass-input').value;
+    
+    const inputHash = await sha256(passwordInput);
+
+    if (authorizedHashes.includes(inputHash)) {
+        closeLock();
+        goTo('private-page');
+        
+        if(typeof printT === 'function') {
+            printT("ACCESS GRANTED: Encrypted session started.", "sys");
         }
+    } else {
+        alert("ACCESS DENIED: Credentials mismatch.");
+        document.getElementById('pass-input').value = "";
+    }
+}
 
         function startCounters() {
             const counters = document.querySelectorAll('.counter');
@@ -526,7 +585,7 @@ function handleCommand(cmd) {
 
     if (cmd === '/help') {
         printToTerminal(asciiLogo, "system");
-        response = "Available commands: /about, /status, /clear, /secret, /gaming, /logs";
+        response = "Available commands: /about, /status, /clear, /secret, /gaming, /logs, /socials";
     } else if (cmd === '/about') {
         response = "User: HaloedDude | Core: Project Cipher | Status: Admin";
     } else if (cmd === '/status') {
@@ -548,7 +607,13 @@ function handleCommand(cmd) {
                            "[24/02/26] Private Archive encryption updated\n" +
                            "[23/02/26] Steam API signature integrated\n" +
                            "[20/02/26] Project Cipher established";
-    } else {
+    } else if (cmd === '/socials') {
+    		printT("Bypassing firewalls... Accessing Network Identities.", "sys");
+    		setTimeout(() => {
+        	goTo('gaming-page');
+    }, 1000);
+}
+	else {
         response = `Err: Command '${cmd}' not found. Type /help.`;
     }
 
