@@ -211,6 +211,21 @@
             color: var(--accent);
             margin-right: 8px;
         }
+
+	/* Glitch Animation */
+@keyframes glitch {
+    0% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(0); }
+    20% { text-shadow: -2px 0 var(--accent), 2px 0 var(--google-red); transform: translate(-1px); }
+    40% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(1px); }
+    60% { text-shadow: -2px 0 var(--accent), 2px 0 var(--google-red); transform: translate(-1px); }
+    80% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(1px); }
+    100% { text-shadow: -2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(0); }
+}
+
+.glitch-hover:hover {
+    animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+    color: #fff;
+}
     </style>
 </head>
 <body>
@@ -218,7 +233,7 @@
     <div class="container">
         
         <div id="home-page" class="page active-page">
-            <h1>HaloedDude</h1>
+            <h1 class="glitch-hover">HaloedDude</h1>
             <p class="subtitle">[ ACCESS_POINT: PROJECT_CIPHER ]</p>
             
             <div class="menu-grid">
@@ -521,6 +536,17 @@ function handleCommand(cmd) {
         response = "SYSTEM OVERRIDE: 🚀 Mode engaged.";
         document.body.style.boxShadow = "inset 0 0 100px rgba(0, 122, 255, 0.5)";
         setTimeout(() => document.body.style.boxShadow = "none", 2000);
+    } else if (cmd === '/logs') {
+                response = "ACCESSING_SYSTEM_LOGS...\n" +
+                           "[25/02/26] Terminal Interface V1.0 deployed\n" +
+                           "[24/02/26] Private Archive encryption updated\n" +
+                           "[23/02/26] Steam API signature integrated\n" +
+                           "[20/02/26] Project Cipher established";
+    } else if (cmd === '/bw') {
+                response = "BOOTING_BUNDESWEHR_MODE... [OK]\n" +
+                           "Role: IT-Systemelektroniker\n" +
+                           "Status: Deployment ready for 01.04.\n" +
+                           "Message: Viel Erfolg beim Dienstantritt!";
     } else {
         response = `Err: Command '${cmd}' not found. Type /help.`;
     }
