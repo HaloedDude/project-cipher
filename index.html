@@ -213,19 +213,19 @@
         }
 
 	/* Glitch Animation */
-@keyframes glitch {
-    0% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(0); }
-    20% { text-shadow: -2px 0 var(--accent), 2px 0 var(--google-red); transform: translate(-1px); }
-    40% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(1px); }
-    60% { text-shadow: -2px 0 var(--accent), 2px 0 var(--google-red); transform: translate(-1px); }
-    80% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(1px); }
-    100% { text-shadow: -2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(0); }
-}
+	@keyframes glitch {
+   	 0% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(0); }
+    	20% { text-shadow: -2px 0 var(--accent), 2px 0 var(--google-red); transform: translate(-1px); }
+    	40% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(1px); }
+    	60% { text-shadow: -2px 0 var(--accent), 2px 0 var(--google-red); transform: translate(-1px); }
+    	80% { text-shadow: 2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(1px); }
+    	100% { text-shadow: -2px 0 var(--accent), -2px 0 var(--google-red); transform: translate(0); }
+	}
 
-.glitch-hover:hover {
-    animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
-    color: #fff;
-}
+	.glitch-hover:hover {
+    	animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+    	color: #fff;
+	}
     </style>
 </head>
 <body>
@@ -274,6 +274,11 @@
 	<div class="changelog-container">
             <div class="changelog-title">[ SYSTEM_CHANGELOG ]</div>
             
+	    <div class="log-entry">
+                <div class="log-date">25/02/26</div>
+                <div class="log-msg">Added Commands to Terminal Interface</div>
+            </div>
+
             <div class="log-entry">
                 <div class="log-date">25/02/26</div>
                 <div class="log-msg">Terminal Interface V1.0 deployed (ASCII_LOGO_ADDED)</div>
@@ -521,7 +526,7 @@ function handleCommand(cmd) {
 
     if (cmd === '/help') {
         printToTerminal(asciiLogo, "system");
-        response = "Available commands: /about, /status, /clear, /secret, /gaming";
+        response = "Available commands: /about, /status, /clear, /secret, /gaming, /logs";
     } else if (cmd === '/about') {
         response = "User: HaloedDude | Core: Project Cipher | Status: Admin";
     } else if (cmd === '/status') {
@@ -538,15 +543,11 @@ function handleCommand(cmd) {
         setTimeout(() => document.body.style.boxShadow = "none", 2000);
     } else if (cmd === '/logs') {
                 response = "ACCESSING_SYSTEM_LOGS...\n" +
+			   "[25/02/26] Added Commands to Terminal Interface\n" +
                            "[25/02/26] Terminal Interface V1.0 deployed\n" +
                            "[24/02/26] Private Archive encryption updated\n" +
                            "[23/02/26] Steam API signature integrated\n" +
                            "[20/02/26] Project Cipher established";
-    } else if (cmd === '/bw') {
-                response = "BOOTING_BUNDESWEHR_MODE... [OK]\n" +
-                           "Role: IT-Systemelektroniker\n" +
-                           "Status: Deployment ready for 01.04.\n" +
-                           "Message: Viel Erfolg beim Dienstantritt!";
     } else {
         response = `Err: Command '${cmd}' not found. Type /help.`;
     }
