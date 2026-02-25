@@ -171,6 +171,46 @@
             padding: 0;
             margin: 0;
         }
+
+/* Changelog Styles */
+        .changelog-container {
+            margin-top: 30px;
+            text-align: left;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .changelog-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .log-entry {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .log-date {
+            color: var(--text-dim);
+            min-width: 80px;
+        }
+
+        .log-msg {
+            color: var(--text);
+            position: relative;
+        }
+
+        .log-msg::before {
+            content: ">";
+            color: var(--accent);
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
@@ -215,6 +255,31 @@
                 <input type="text" id="terminal-input" placeholder="Enter command..." autocomplete="off">
             </div>
         </div>
+
+	<div class="changelog-container">
+            <div class="changelog-title">[ SYSTEM_CHANGELOG ]</div>
+            
+            <div class="log-entry">
+                <div class="log-date">25/02/26</div>
+                <div class="log-msg">Terminal Interface V1.0 deployed (ASCII_LOGO_ADDED)</div>
+            </div>
+
+            <div class="log-entry">
+                <div class="log-date">24/02/26</div>
+                <div class="log-msg">Private Archive encryption module updated</div>
+            </div>
+
+            <div class="log-entry">
+                <div class="log-date">23/02/26</div>
+                <div class="log-msg">Steam API real-time signature integrated</div>
+            </div>
+
+            <div class="log-entry">
+                <div class="log-date">20/02/26</div>
+                <div class="log-msg">Initial kernel boot: Project Cipher identity established</div>
+            </div>
+        </div>
+
         </div>
 
         <div id="gaming-page" class="page">
@@ -340,7 +405,7 @@
     /* Versteckt den Standard-Pfeil vom Browser */
     summary::-webkit-details-marker { display: none; }
     summary { list-style: none; }
-</style>
+	</style>
         </div>
 
     </div>
