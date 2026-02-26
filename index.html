@@ -236,16 +236,12 @@
             <h1 class="glitch-hover">HaloedDude</h1>
             <p class="subtitle">[ ACCESS_POINT: PROJECT_CIPHER ]</p>
             
-            <div class="menu-grid">
-                <div class="menu-button" onclick="goTo('gaming-page')">
-                    <h3 style="margin:0">Gaming</h3>
-                    <p style="margin:5px 0 0; font-size:0.8rem; color:var(--text-dim)">Steam Analytics</p>
-                </div>
-                <div class="menu-button" onclick="openLock()">
-                    <h3 style="margin:0">Private</h3>
-                    <p style="margin:5px 0 0; font-size:0.8rem; color:var(--text-dim)">Encrypted Content</p>
-                </div>
-            </div>
+            <div class="menu-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px;">
+   		 <div class="menu-button" onclick="goTo('gaming-page')"><h3>Gaming</h3></div>
+   		 <div class="menu-button" onclick="goTo('ai-page')"><h3>Cipher AI</h3></div>
+    		 <div class="menu-button" onclick="goTo('arcade-page')"><h3>Arcade</h3></div>
+    		 <div class="menu-button" onclick="openLock()"><h3>Private Cloud</h3></div>
+	    </div>
 
             <div class="card">
                 <h2 style="margin-top:0; font-size:1.2rem">Direct Contact</h2>
@@ -479,6 +475,36 @@
         </div>
     </div>
 
+    <div id="ai-page" class="page">
+    <span class="back-link" onclick="goTo('home-page')">← System Exit</span>
+    <div class="card">
+        <h2 style="color:var(--accent);">Cipher-AI [Gamer Edition]</h2>
+        <div id="ai-chat-output" style="height:250px; overflow-y:auto; background:#000; padding:15px; border-radius:10px; font-family:'JetBrains Mono'; font-size:0.8rem; margin-bottom:15px; border:1px solid var(--border); border-left: 3px solid var(--accent);">
+            <div style="color:var(--accent);">AI: System online. Verbindung stabil. Was gibt's, Admin?</div>
+        </div>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="ai-input" placeholder="Frag was..." style="flex:1; background:transparent; border:1px solid var(--border); color:white; padding:10px; border-radius:5px; outline:none;" onkeypress="if(event.key === 'Enter') askAI()">
+            <button onclick="askAI()" style="background:var(--accent); border:none; color:white; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold;">SEND</button>
+        </div>
+    </div>
+</div>
+
+<div id="arcade-page" class="page">
+    <span class="back-link" onclick="goTo('home-page')">← Exit Arcade</span>
+    <div class="card" style="text-align: center;">
+        <h2 style="color:var(--accent);">System Arcade</h2>
+        <p style="color:var(--text-dim); font-size: 0.8rem;">[ STATUS: 1 GAME AVAILABLE ]</p>
+        
+        <div id="game-container" style="background:#000; border:1px solid var(--border); padding:20px; border-radius:10px; margin-top:20px;">
+            <h3>Matrix Guess</h3>
+            <p id="game-hint">Guess the Code (1-100)</p>
+            <input type="number" id="game-guess" style="background:transparent; border:1px solid var(--accent); color:white; padding:10px; text-align:center; width:80px;">
+            <button onclick="playGuess()" style="background:var(--accent); border:none; color:white; padding:10px; cursor:pointer; margin-left:10px;">TRY</button>
+            <p id="game-feedback" style="margin-top:15px; font-family:'JetBrains Mono'; color:var(--accent);"></p>
+        </div>
+    </div>
+</div>
+
     <script>
 
 async function sha256(message) {
@@ -620,6 +646,46 @@ function handleCommand(cmd) {
     printToTerminal(response, "system");
 }
 // --- ENDE TERMINAL MIT ASCII LOGO ---
+
+	// --- CIPHER AI LOGIK ---
+function askAI() {
+    const inputField = document.getElementById('ai-input');
+    const input = inputField.value.toLowerCase().trim();
+    const output = document.getElementById('ai-chat-output');
+    
+    if(!input) return;
+
+    let response = "Analyse läuft... Meine Datenbank hat dazu keinen Eintrag. Frag mal nach 'Bundeswehr', 'Roblox' oder 'Setup'.";
+
+    if(input.includes("hallo") || input.includes("hey")) response = "Status: Online. Willkommen zurück, Commander.";
+    if(input.includes("roblox")) response = "Roblox-Protokoll aktiv. Welches Game zocken wir? Blox Fruits? Adopt Me? Ich bin bereit.";
+    if(input.includes("bundeswehr") || input.includes("it-systemelektroniker")) response = "01.04. markiert den Dienstantritt. IT-Systemelektroniker ist ein strategisch kluger Move. Viel Erfolg im BwK!";
+    if(input.includes("setup") || input.includes("pc")) response = "Dein Setup sieht stabil aus. Aber denk dran: Mehr RGB bedeutet nicht immer mehr Skill. ;)";
+    if(input.includes("steam")) response = "Steam-Schnittstelle ist bereits im Gaming-Tab integriert. Check mal deine Stats ab.";
+
+    output.innerHTML += `<div style="color:var(--text-dim); margin-top:10px;">> User: ${input}</div>`;
+    output.innerHTML += `<div style="color:var(--accent); margin-bottom:10px;">> AI: ${response}</div>`;
+    
+    inputField.value = "";
+    output.scrollTop = output.scrollHeight;
+}
+
+// --- ARCADE LOGIK (Matrix Guess) ---
+let secretCode = Math.floor(Math.random() * 100) + 1;
+function playGuess() {
+    const guess = document.getElementById('game-guess').value;
+    const feedback = document.getElementById('game-feedback');
+    
+    if(guess == secretCode) {
+        feedback.innerHTML = "ACCESS GRANTED! Acces granted. System will be generated...";
+        feedback.style.color = "#00ff00";
+        setTimeout(() => { secretCode = Math.floor(Math.random() * 100) + 1; feedback.innerHTML = ""; }, 3000);
+    } else if(guess < secretCode) {
+        feedback.innerHTML = "HIGHER... (System-Spannung steigt)";
+    } else {
+        feedback.innerHTML = "LOWER... (Firewall blocked)";
+    }
+}
     </script>
 </body>
 </html>
